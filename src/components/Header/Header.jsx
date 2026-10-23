@@ -1,8 +1,7 @@
 import React from "react";
 import { Container, Logo, LogoutBtn } from "../index";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 function Header() {
     const authStatus = useSelector((state) => state.auth.status);
@@ -17,13 +16,16 @@ function Header() {
     return (
         <header className="py-3 shadow bg-slate-900 text-white sticky top-0 z-40">
             <Container>
-                <nav className="flex flex-wrap items-center gap-2">
-                    <div className="mr-4">
+                <nav className="flex items-center justify-between flex-wrap gap-3">
+                    {/* Logo */}
+                    <div>
                         <Link to="/">
                             <Logo width="70px" />
                         </Link>
                     </div>
-                    <ul className="flex flex-wrap items-center gap-1 sm:gap-2 ml-auto">
+
+                    {/* Nav Items */}
+                    <ul className="flex items-center gap-1 sm:gap-2 ml-auto">
                         {navItems.map((item) =>
                             item.active ? (
                                 <li key={item.name}>
@@ -36,10 +38,30 @@ function Header() {
                                 </li>
                             ) : null
                         )}
-                        {authStatus && (
+                        
+                        {authStatus ? (
                             <li>
                                 <LogoutBtn />
                             </li>
+                        ) : (
+                            <>
+                                <li>
+                                    <button
+                                        onClick={() => navigate("/login")}
+                                        className="inline-block px-3 py-2 text-sm sm:text-base duration-200 hover:bg-slate-800 rounded-full"
+                                    >
+                                        Login
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => navigate("/signup")}
+                                        className="inline-block px-4 py-2 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 rounded-full duration-200"
+                                    >
+                                        Sign Up
+                                    </button>
+                                </li>
+                            </>
                         )}
                     </ul>
                 </nav>
